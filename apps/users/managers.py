@@ -7,7 +7,7 @@ class CustomUserManager(BaseUserManager):
     def email_validator(self, email):
         try:
             validate_email(email)
-        except:
+        except ValidationError:
             raise ValueError(_('You must provide a valid email address'))
 
     def create_user(self, username, first_name, last_name, email, password, **extra_fields):
@@ -51,7 +51,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("Superusers must have a password"))
 
         if email:
-            email = self.normalize_email(email),
+            email = self.normalize_email(email)
             self.email_validator(email)
         else:
             raise ValueError(_("Admin Account: An email address is required"))
